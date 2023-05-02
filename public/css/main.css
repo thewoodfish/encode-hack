@@ -1,0 +1,64 @@
+.mt-30 {
+    margin-top: 30px;
+}
+
+.center {
+    text-align: center
+}
+
+.fs-150 {
+    font-size: 150%;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.mt-70 {
+    margin-top: 70px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.width-50 {
+    width: 70% !important;
+}
+
+.right {
+    text-align: right;
+}
+
+.border {
+    border: 1px solid #dedede;
+}
+
+.p-10 {
+    padding: 10px;
+}
+
+.rad-10 {
+    border-radius: 10px;
+}
+
+.del-form {
+    color: #0d6efd;
+    font-size: 70%;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.mb-30 {
+    margin-bottom: 30px;
+}

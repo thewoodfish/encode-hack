@@ -5,8 +5,30 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import { blake2AsHex } from '@polkadot/util-crypto';
+// blockchain essentials
+import { ApiPromise, WsProvider } from '@polkadot/api';
+import { ContractPromise } from '@polkadot/api-contract';
+import { mnemonicGenerate, cryptoWaitReady, blake2AsHex, xxhashAsHex } from '@polkadot/util-crypto';
+import { Keyring } from '@polkadot/keyring';
 
+
+// initializations
+const contract_addr = "5HWqdsYgDg7biPXnQPTEyPmKvBjq7AgkRSJQxSpZDLtFUkzq";
+const wsProvider = new WsProvider('ws://127.0.0.1:9944');
+const api = await ApiPromise.create({ provider: wsProvider });
+const contract = new ContractPromise(api, meta.metadata(), contract_addr);
+const keyring = new Keyring({ type: 'sr25519' });
+let alice = undefined;
+
+// wait 5 secs for the wasm init
+setTimeout(async () => {
+    await cryptoWaitReady().then(() => {
+        alice = keyring.addFromUri('//Alice');    // for running tests
+    });
+}, 5000);
+
+// import the metadata
+import * as meta from "./metadata.js";
 
 // imports
 const express = require('express');
@@ -60,8 +82,6 @@ app.post('/create-election', (req, res) => {
             console.error(err.message);
             return;
         }
-
-        let index = 0;
         let total_uri = [];
         for (const j in files) {
             let f = files[j];
@@ -83,11 +103,10 @@ app.post('/create-election', (req, res) => {
 async function loadElection(req, res) {
     // extract election hash
     let hash = req.link.split("-")[3];
-    // if (hash) {
-    let result = await mediator.getElection();
-
-    console.log(result);
-    // }
+    if (hash) {
+        let result = await mediator.getElection(contract, api, alice, hash);
+        console.log(result);
+    }
 }
 
 async function initElection(names, parties, hours, total_uri, res) {
@@ -108,9 +127,15 @@ async function initElection(names, parties, hours, total_uri, res) {
     let hash = blake2AsHex(`${names}${Math.random() * 100000}`);
 
     // Send the transaction, like elsewhere this is a normal extrinsic
-    await
-        mediator.createElection(hash, names, parties, ipfs_str, getFutureUnixTime(hours))
-            .then(() => res.status(200).send({ data: `#elect-0-rate-${hash}` }));
+    await contract.tx
+        .commence({ storageDepositLimit, gasLimit }, hash, names, parties, ipfs_str, getFutureUnixTime(hours))
+        .signAndSend(alice, result => {
+            if (result.status.isInBlock) {
+                console.log('in a block');
+            } else if (result.status.isFinalized) {
+                console.log('finalized');
+            }
+        }).then(() => res.status(200).send({ data: `#elect-0-rate-${hash}` }));
 }
 
 async function uploadToIPFS(path) {

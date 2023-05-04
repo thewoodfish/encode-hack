@@ -1,7 +1,7 @@
 export function metadata() {
     return {
         "source": {
-            "hash": "0xe94771346bcb7ec6c8048cc0c80ec71a646d91b5c9066ef049529bf55d7b70e7",
+            "hash": "0xa738caad55575b49f124f0b2938704608a3eed696ee800fe60c847eb5bab3178",
             "language": "ink! 4.2.0",
             "compiler": "rustc 1.69.0",
             "build_info": {
@@ -47,31 +47,31 @@ export function metadata() {
                     "displayName": [
                         "AccountId"
                     ],
-                    "type": 10
+                    "type": 11
                 },
                 "balance": {
                     "displayName": [
                         "Balance"
                     ],
-                    "type": 12
+                    "type": 13
                 },
                 "blockNumber": {
                     "displayName": [
                         "BlockNumber"
                     ],
-                    "type": 14
+                    "type": 15
                 },
                 "chainExtension": {
                     "displayName": [
                         "ChainExtension"
                     ],
-                    "type": 15
+                    "type": 16
                 },
                 "hash": {
                     "displayName": [
                         "Hash"
                     ],
-                    "type": 13
+                    "type": 14
                 },
                 "maxEventTopics": 4,
                 "timestamp": {
@@ -183,24 +183,6 @@ export function metadata() {
                     "selector": "0xaf493719"
                 },
                 {
-                    "args": [],
-                    "default": false,
-                    "docs": [
-                        " This message returns all the candidates in the election"
-                    ],
-                    "label": "winner",
-                    "mutates": false,
-                    "payable": false,
-                    "returnType": {
-                        "displayName": [
-                            "ink",
-                            "MessageResult"
-                        ],
-                        "type": 9
-                    },
-                    "selector": "0x4c96dafb"
-                },
-                {
                     "args": [
                         {
                             "label": "hash",
@@ -227,6 +209,34 @@ export function metadata() {
                         "type": 9
                     },
                     "selector": "0x9c677d96"
+                },
+                {
+                    "args": [
+                        {
+                            "label": "hash",
+                            "type": {
+                                "displayName": [
+                                    "Vec"
+                                ],
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "default": false,
+                    "docs": [
+                        " This message returns the time the election ends"
+                    ],
+                    "label": "debugg",
+                    "mutates": false,
+                    "payable": false,
+                    "returnType": {
+                        "displayName": [
+                            "ink",
+                            "MessageResult"
+                        ],
+                        "type": 10
+                    },
+                    "selector": "0x7f02fea0"
                 }
             ]
         },
@@ -426,7 +436,7 @@ export function metadata() {
                                 {
                                     "fields": [
                                         {
-                                            "type": 1
+                                            "type": 3
                                         }
                                     ],
                                     "index": 0,
@@ -447,7 +457,7 @@ export function metadata() {
                     "params": [
                         {
                             "name": "T",
-                            "type": 1
+                            "type": 3
                         },
                         {
                             "name": "E",
@@ -505,10 +515,52 @@ export function metadata() {
                 "id": 10,
                 "type": {
                     "def": {
+                        "variant": {
+                            "variants": [
+                                {
+                                    "fields": [
+                                        {
+                                            "type": 4
+                                        }
+                                    ],
+                                    "index": 0,
+                                    "name": "Ok"
+                                },
+                                {
+                                    "fields": [
+                                        {
+                                            "type": 7
+                                        }
+                                    ],
+                                    "index": 1,
+                                    "name": "Err"
+                                }
+                            ]
+                        }
+                    },
+                    "params": [
+                        {
+                            "name": "T",
+                            "type": 4
+                        },
+                        {
+                            "name": "E",
+                            "type": 7
+                        }
+                    ],
+                    "path": [
+                        "Result"
+                    ]
+                }
+            },
+            {
+                "id": 11,
+                "type": {
+                    "def": {
                         "composite": {
                             "fields": [
                                 {
-                                    "type": 11,
+                                    "type": 12,
                                     "typeName": "[u8; 32]"
                                 }
                             ]
@@ -522,7 +574,7 @@ export function metadata() {
                 }
             },
             {
-                "id": 11,
+                "id": 12,
                 "type": {
                     "def": {
                         "array": {
@@ -533,7 +585,7 @@ export function metadata() {
                 }
             },
             {
-                "id": 12,
+                "id": 13,
                 "type": {
                     "def": {
                         "primitive": "u128"
@@ -541,13 +593,13 @@ export function metadata() {
                 }
             },
             {
-                "id": 13,
+                "id": 14,
                 "type": {
                     "def": {
                         "composite": {
                             "fields": [
                                 {
-                                    "type": 11,
+                                    "type": 12,
                                     "typeName": "[u8; 32]"
                                 }
                             ]
@@ -561,7 +613,7 @@ export function metadata() {
                 }
             },
             {
-                "id": 14,
+                "id": 15,
                 "type": {
                     "def": {
                         "primitive": "u32"
@@ -569,7 +621,7 @@ export function metadata() {
                 }
             },
             {
-                "id": 15,
+                "id": 16,
                 "type": {
                     "def": {
                         "variant": {}
@@ -584,4 +636,4 @@ export function metadata() {
         ],
         "version": "4"
     };
-};
+}

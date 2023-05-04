@@ -36,58 +36,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createElection = exports.getElection = void 0;
+exports.getElection = void 0;
 var util_1 = require("@polkadot/util");
-// import the metadata
-var meta = undefined;
-// blockchain essentials
-var api_1 = require("@polkadot/api");
-var util_crypto_1 = require("@polkadot/util-crypto");
-var api_contract_1 = require("@polkadot/api-contract");
-var keyring_1 = require("@polkadot/keyring");
-// initializations
-var contract_addr = "5EF8GfJmLaDb3aUzpqzYyL7uQWzxdQyKjiB3BBqnXjqUeSzq";
-var wsProvider = new api_1.WsProvider('ws://127.0.0.1:9944');
-var api = undefined;
-var contract = undefined;
-(async () => {
-api = await api_1.ApiPromise.create({ provider: wsProvider });
-meta = await import("./metadata.js");
-contract = new api_contract_1.ContractPromise(api, meta.metadata(), contract_addr);
-})();
-var keyring = new keyring_1.Keyring({ type: 'sr25519' });
-var alice = undefined;
-// wait 5 secs for the wasm init
-setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, util_crypto_1.cryptoWaitReady)().then(function () {
-                    alice = keyring.addFromUri('//Alice'); // for running tests
-                })];
-            case 1:
-                _a.sent();
-                return [2 /*return*/];
-        }
-    });
-}); }, 5000);
 var MAX_CALL_WEIGHT = new util_1.BN(5000000000000).isub(util_1.BN_ONE);
 var PROOFSIZE = new util_1.BN(1000000);
 var storageDepositLimit = new util_1.BN(1000);
-// send message onchain
-var value = 10000;
-var gasLimit = 3000n * 1000000n;
-function getElection() {
+function getElection(contract, api, alice, hash) {
     return __awaiter(this, void 0, void 0, function () {
         var _a, result, output;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, contract.query.winner(alice.address, {
+                case 0: return [4 /*yield*/, contract.query.fetchCandidates(alice.address, {
                         gasLimit: api === null || api === void 0 ? void 0 : api.registry.createType('WeightV2', {
                             refTime: MAX_CALL_WEIGHT,
                             proofSize: PROOFSIZE,
                         }),
                         storageDepositLimit: storageDepositLimit,
-                    })];
+                    }, hash)];
                 case 1:
                     _a = _b.sent(), result = _a.result, output = _a.output;
                     return [2 /*return*/, result.toHuman()];
@@ -96,35 +61,3 @@ function getElection() {
     });
 }
 exports.getElection = getElection;
-function createElection(hash, names, parties, ipfs_str, hours) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!alice) {
-                        throw new Error('Alice keypair is not initialized');
-                    }
-                    return [4 /*yield*/, contract.tx
-                            .commence({
-                            storageDepositLimit: storageDepositLimit,
-                            gasLimit: api.registry.createType('WeightV2', {
-                                refTime: MAX_CALL_WEIGHT,
-                                proofSize: PROOFSIZE,
-                            })
-                        }, hash, names, parties, ipfs_str, hours)
-                            .signAndSend(alice, function (result) {
-                            if (result.status.isInBlock) {
-                                console.log('in a block');
-                            }
-                            else if (result.status.isFinalized) {
-                                console.log('finalized');
-                            }
-                        })];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.createElection = createElection;

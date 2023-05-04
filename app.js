@@ -13,7 +13,7 @@ import { Keyring } from '@polkadot/keyring';
 
 
 // initializations
-const contract_addr = "5HWqdsYgDg7biPXnQPTEyPmKvBjq7AgkRSJQxSpZDLtFUkzq";
+const contract_addr = "5C9WkoQHTPFwTaqcbXpZdkceSGzzS5tt1KveHUJ9gPmU1SrN";
 const wsProvider = new WsProvider('ws://127.0.0.1:9944');
 const api = await ApiPromise.create({ provider: wsProvider });
 const contract = new ContractPromise(api, meta.metadata(), contract_addr);
@@ -116,7 +116,7 @@ async function initElection(names, parties, hours, total_uri, res) {
         const cid = await uploadToIPFS(total_uri[i]);
         ipfs_str += `${cid},`;
     }
-    ipfs_str.substring(0, ipfs_str.length - 1);
+    ipfs_str = ipfs_str.substring(0, ipfs_str.length - 1);
 
     // send message onchain
     const value = 10000;

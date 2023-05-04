@@ -1,7 +1,7 @@
 export function metadata() {
     return {
         "source": {
-            "hash": "0xa738caad55575b49f124f0b2938704608a3eed696ee800fe60c847eb5bab3178",
+            "hash": "0x3777853a45509fb80810f5fd88638e70924f31c8bca4d31869bab1ce15cc8964",
             "language": "ink! 4.2.0",
             "compiler": "rustc 1.69.0",
             "build_info": {
@@ -47,31 +47,31 @@ export function metadata() {
                     "displayName": [
                         "AccountId"
                     ],
-                    "type": 11
+                    "type": 10
                 },
                 "balance": {
                     "displayName": [
                         "Balance"
                     ],
-                    "type": 13
+                    "type": 12
                 },
                 "blockNumber": {
                     "displayName": [
                         "BlockNumber"
                     ],
-                    "type": 15
+                    "type": 14
                 },
                 "chainExtension": {
                     "displayName": [
                         "ChainExtension"
                     ],
-                    "type": 16
+                    "type": 15
                 },
                 "hash": {
                     "displayName": [
                         "Hash"
                     ],
-                    "type": 14
+                    "type": 13
                 },
                 "maxEventTopics": 4,
                 "timestamp": {
@@ -209,34 +209,6 @@ export function metadata() {
                         "type": 9
                     },
                     "selector": "0x9c677d96"
-                },
-                {
-                    "args": [
-                        {
-                            "label": "hash",
-                            "type": {
-                                "displayName": [
-                                    "Vec"
-                                ],
-                                "type": 3
-                            }
-                        }
-                    ],
-                    "default": false,
-                    "docs": [
-                        " This message returns the time the election ends"
-                    ],
-                    "label": "debugg",
-                    "mutates": false,
-                    "payable": false,
-                    "returnType": {
-                        "displayName": [
-                            "ink",
-                            "MessageResult"
-                        ],
-                        "type": 10
-                    },
-                    "selector": "0x7f02fea0"
                 }
             ]
         },
@@ -515,52 +487,10 @@ export function metadata() {
                 "id": 10,
                 "type": {
                     "def": {
-                        "variant": {
-                            "variants": [
-                                {
-                                    "fields": [
-                                        {
-                                            "type": 4
-                                        }
-                                    ],
-                                    "index": 0,
-                                    "name": "Ok"
-                                },
-                                {
-                                    "fields": [
-                                        {
-                                            "type": 7
-                                        }
-                                    ],
-                                    "index": 1,
-                                    "name": "Err"
-                                }
-                            ]
-                        }
-                    },
-                    "params": [
-                        {
-                            "name": "T",
-                            "type": 4
-                        },
-                        {
-                            "name": "E",
-                            "type": 7
-                        }
-                    ],
-                    "path": [
-                        "Result"
-                    ]
-                }
-            },
-            {
-                "id": 11,
-                "type": {
-                    "def": {
                         "composite": {
                             "fields": [
                                 {
-                                    "type": 12,
+                                    "type": 11,
                                     "typeName": "[u8; 32]"
                                 }
                             ]
@@ -574,7 +504,7 @@ export function metadata() {
                 }
             },
             {
-                "id": 12,
+                "id": 11,
                 "type": {
                     "def": {
                         "array": {
@@ -585,7 +515,7 @@ export function metadata() {
                 }
             },
             {
-                "id": 13,
+                "id": 12,
                 "type": {
                     "def": {
                         "primitive": "u128"
@@ -593,13 +523,13 @@ export function metadata() {
                 }
             },
             {
-                "id": 14,
+                "id": 13,
                 "type": {
                     "def": {
                         "composite": {
                             "fields": [
                                 {
-                                    "type": 12,
+                                    "type": 11,
                                     "typeName": "[u8; 32]"
                                 }
                             ]
@@ -613,7 +543,7 @@ export function metadata() {
                 }
             },
             {
-                "id": 15,
+                "id": 14,
                 "type": {
                     "def": {
                         "primitive": "u32"
@@ -621,7 +551,7 @@ export function metadata() {
                 }
             },
             {
-                "id": 16,
+                "id": 15,
                 "type": {
                     "def": {
                         "variant": {}

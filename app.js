@@ -24,7 +24,7 @@ setTimeout(async () => {
     await cryptoWaitReady().then(() => {
         alice = keyring.addFromUri('//Bob');    // for running tests
     });
-}, 5000);
+}, 1000);
 
 // import the metadata
 import * as meta from "./metadata.js";
@@ -95,94 +95,92 @@ app.post('/create-election', (req, res) => {
 });
 
 async function castVote(req, res) {
-    // check if election is still on 
-    const now = new Date();
-    const unixTimestamp = Math.floor(now.getTime() / 1000); // divide by 1000 to convert to Unix timestamp
-    // get election time
-    const result = await mediator.getBound(contract, api, alice, req.elink);
-    const hex = result.Ok.data.slice(2); // remove the '0x' prefix
-    const decimal = parseInt(hex, 16);
-    const timestamp = decimal / 1e9;
-    if (unixTimestamp < timestamp) {
-        // get bvn and name
-        if (await verifyBVN(req.bvn, req.name)) {
-            // make sure the BVN does not vote twice
-            let result = await mediator.isBvnUnique(contract, api, alice, req.elink, req.bvn);
-            if (result.Ok.data == "0x0000") {
-                // cast vote
-                await mediator.castVote(api, contract, alice, req.elink, req.hash, req.bvn)
-                    .then(() => res.status(200).send({ error: false, data: "Vote cast successfully" }));
+    try {
+        const now = new Date();
+        const unixTimestamp = Math.floor(now.getTime() / 1000); // divide by 1000 to convert to Unix timestamp
+        const result = await mediator.getBound(contract, api, alice, req.elink);
+        const hex = result.Ok.data;
+        const elecTIme = extractUnixTimestamp(hex);
+        if (unixTimestamp < elecTIme) {
+            if (await verifyBVN(req.bvn, req.name)) {
+                let result = await mediator.isBvnUnique(contract, api, alice, req.elink, req.bvn);
+                if (result.Ok.data == "0x0000") {
+                    await mediator.castVote(api, contract, alice, req.elink, req.hash, req.bvn)
+                        .then(() => res.status(200).send({ error: false, data: "Vote cast successfully" }));
+                } else {
+                    res.status(500).send({ error: true, data: "You cannot cast your vote twice" });
+                }
             } else {
-                res.status(500).send({ error: true, data: "You cannot cast your vote twice" });
+                res.status(500).send({ error: true, data: "BVN verification failed" });
             }
         } else {
-            res.status(500).send({ error: true, data: "BVN verification failed" });
+            res.status(500).send({ error: true, data: "Election is over" });
         }
-    } else {
-        res.status(500).send({ error: true, data: "Election is over" });
+    } catch (err) {
+        res.status(500).send({ error: true, data: "Could not complete operation" });
     }
 }
 
-// load an election result
 async function loadResult(req, res) {
-    // we'll load the election info and the votes of the candidates separately
-    // extract election hash
-    let hash = req.link.split("-")[3];
-    if (hash) {
-        const returned = await mediator.getElection(contract, api, alice, hash);
-        const hexString = returned.Ok.data.slice(2); // remove '0x' from beginning
-        const buffer = Buffer.from(hexString.slice(2), 'hex');
-        const string = buffer.toString();
-        let result = [];
-
-        [].forEach.call(string.split("&&"), (d) => {
-            if (d) {
-                // split again
-                let res = {};
-                [res.name, res.party, res.hash] = d.split("%%");
-                result.push(res);
-            }
-        });
-
-        // get the election result
-        const rslt = await mediator.getVotes(contract, api, alice, hash);
-        let votes = getNonZeroDecimalValues(rslt.Ok.data).slice(2);
-
-        res.status(200).send({ data: result, votes, error: false });
-    } else
-        res.status(500).send({ data: "invalid election URI specified", error: true });
+    try {
+        let hash = req.link.split("-")[3];
+        if (hash) {
+            const returned = await mediator.getElection(contract, api, alice, hash);
+            const hexString = returned.Ok.data.slice(2);
+            const buffer = Buffer.from(hexString.slice(2), 'hex');
+            const string = buffer.toString();
+            let result = [];
+            [].forEach.call(string.split("&&"), (d) => {
+                if (d) {
+                    let res = {};
+                    [res.name, res.party, res.hash] = d.split("%%");
+                    result.push(res);
+                }
+            });
+            const rslt = await mediator.getVotes(contract, api, alice, hash);
+            let votes = getNonZeroDecimalValues(rslt.Ok.data).slice(2);
+            res.status(200).send({ data: result, votes, error: false });
+        } else
+            res.status(500).send({ data: "invalid election URI specified", error: true });
+    } catch (err) {
+        res.status(500).send({ error: true, data: "Could not complete operation" });
+    }
 }
 
 async function loadElection(req, res) {
-    // extract election hash
-    let hash = req.link.split("-")[3];
-    if (hash) {
-        const data = await mediator.getElection(contract, api, alice, hash);
-        const hexString = data.Ok.data.slice(2); // remove '0x' from beginning
-        const buffer = Buffer.from(hexString.slice(2), 'hex');
-        const string = buffer.toString();
-        let result = [];
-
-        [].forEach.call(string.split("&&"), (d) => {
-            if (d) {
-                // split again
-                let res = {};
-                [res.name, res.party, res.hash] = d.split("%%");
-                result.push(res);
-            }
-        });
-
-        res.status(200).send({ data: result, error: false });
-    } else
-        res.status(500).send({ data: "invalid election URI specified", error: true });
+    try {
+        let hash = req.link.split("-")[3];
+        if (hash) {
+            const data = await mediator.getElection(contract, api, alice, hash);
+            const hexString = data.Ok.data.slice(2);
+            const buffer = Buffer.from(hexString.slice(2), 'hex');
+            const string = buffer.toString();
+            let result = [];
+            [].forEach.call(string.split("&&"), (d) => {
+                if (d) {
+                    let res = {};
+                    [res.name, res.party, res.hash] = d.split("%%");
+                    result.push(res);
+                }
+            });
+            res.status(200).send({ data: result, error: false });
+        } else
+            res.status(500).send({ data: "invalid election URI specified", error: true });
+    } catch (err) {
+        res.status(500).send({ error: true, data: "Could not complete operation" });
+    }
 }
 
 async function createElection(names, parties, hours, blake_hashes, res) {
-    // the hash of the election is the blake2 hash of all the candidates + nonce
-    let hash = blake2AsHex(`${names}${Math.random() * 100000}`);
-    // Send the transaction
-    await mediator.initElection(api, contract, alice, hash, names, parties, blake_hashes, getFutureUnixTime(hours))
-        .then(() => res.status(200).send({ data: `#elect-0-rate-${hash}` }));
+    try {
+        // the hash of the election is the blake2 hash of all the candidates + nonce
+        let hash = blake2AsHex(`${names}${Math.random() * 100000}`);
+        // Send the transaction
+        await mediator.initElection(api, contract, alice, hash, names, parties, blake_hashes, getFutureUnixTime(hours))
+            .then(() => res.status(200).send({ data: `#elect-0-rate-${hash}` }));
+    } catch (err) {
+        res.status(500).send({ error: true, data: "Could not complete operation" });
+    }
 }
 
 function getFutureUnixTime(hours) {
@@ -232,6 +230,23 @@ function getNonZeroDecimalValues(str) {
 
     // Return the new array.
     return nonZeroValues;
+}
+
+function extractUnixTimestamp(hex) {
+    // Convert the hex string to a byte array.
+    var bytes = hex.match(/.{2}/g).reverse();
+
+    // Convert the little-endian byte array to a big-endian byte array.
+    var bigEndianBytes = bytes.join('').split('').filter(c => c != 'x').join('');
+
+    // Parse the big-endian byte array as a BigInt.
+    var timestamp = BigInt('0x' + bigEndianBytes);
+
+    // Convert the BigInt timestamp to a Unix timestamp in seconds.
+    var unixTimestamp = Math.floor(Number(timestamp) / 1000);
+
+    // Return the Unix timestamp in seconds.
+    return unixTimestamp;
 }
 
 // listen on port 3000

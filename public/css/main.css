@@ -10,6 +10,10 @@
     font-size: 150%;
 }
 
+.fs-80 {
+    font-size: 80%;
+}
+
 .bold {
     font-weight: 700;
 }
@@ -65,4 +69,18 @@
 
 .p-0 {
     padding: 0 !important;
+}
+
+.form-label {
+    font-size: 70%;
+    font-weight: 700;
+}
+
+.p-10 {
+    padding: 10px !important;
+}
+
+.cand {
+    position: relative;
+    top: -3px;
 }

@@ -89,11 +89,15 @@ document.body.addEventListener(
 
                             if (!res.error) {
                                 let data = res.data;
+                                appear(".bvn-ask-div");
+                                appear(".candid8");
+                                qs(".candidates-row-1").innerHTML = "";
                                 if (data[0].name != '\x00') {
                                     for (var i = 0; i < data.length; i++) {
                                         qs(".candidates-row-1").innerHTML += `
-                                        <div class="candid col-md-4 border p-10">
+                                        <div class="candid col-4 border p-10 bold small center">
                                             <p>${removeBinaryData(data[i].name)}</p>
+                                            <hr>
                                             <p>${data[i].party}</p>
                                             <div class="d-grid gap-2 mt-30 mb-30">
                                                 <button class="btn btn-primary vote-btn" data-hash="${data[i].hash}" type="button">Vote me</button>
@@ -101,8 +105,10 @@ document.body.addEventListener(
                                         </div>`;
                                     }
                                 }
-                            } else
+                            } else {
                                 toast(res.data);
+                                hide(".bvn-ask-div");
+                            }
                         });
                     })
             } else
@@ -180,36 +186,48 @@ document.body.addEventListener(
                 })
                     .then(async res => {
                         await res.json().then(res => {
+
                             hide(".load-election-after-1");
                             appear(".load-election-before-1");
+                            if (!res.error) {
+                                // first get the data
+                                let data = res.data;
+                                let votes = res.votes;
+                                let total_votes = 0;
 
-                            // first get the data
-                            let data = res.data;
-                            let votes = res.votes;
-                            let total_votes = 0;
+                                // get sum total of votes and index of biggest vote
+                                let biggest = 0;
+                                let trace = 0;
+                                for (var i = 0; i < votes.length; i++) {
+                                    if (votes[i] > trace) {
+                                        trace = votes[i];
+                                        biggest = i;
+                                    }
+                                    total_votes += votes[i] - 1;
+                                }
 
-                            // get sum total of votes
-                            for (var i = 0; i < votes.length; i++) {
-                                total_votes += votes[i] - 1;
-                            }
 
-                            qs(".votes-slider").innerHTML = "";
-                            for (var i = 0; i < data.length; i++) {
-                                // calculate the percentage
-                                let percent = (((votes[i] - 1) / total_votes) * 100).toFixed(1);
-                                qs(".votes-slider").innerHTML +=
-                                    `<div class="col-md-3 p-0">
-                                        ${removeBinaryData(data[i].name)} (${data[i].party})
-                                    </div>
-                                    <div class=" col-md-9 p-0">
-                                    <div class="progress" role="progressbar" 
-                                        aria-valuenow="${votes[i] - 1}" aria-valuemin="0" aria-valuemax="${total_votes}">
-                                        <div class="progress-bar" style="width: ${percent}%">${percent}% (${votes[i] - 1} votes)</div>
+                                qs(".votes-slider").innerHTML = "";
+                                appear(".elect-res");
+                                qs(".ttl-votes").innerText = total_votes;
+                                for (var i = 0; i < data.length; i++) {
+                                    // calculate the percentage
+                                    let percent = (((votes[i] - 1) / total_votes) * 100).toFixed(1);
+                                    qs(".votes-slider").innerHTML +=
+                                        `<div class="col-3 p-0 bold small cand">
+                                            ${removeBinaryData(data[i].name)} (${data[i].party})
                                         </div>
-                                    </div>`;
+                                        <div class=" col-9 p-0">
+                                        <div class="progress" role="progressbar" 
+                                            aria-valuenow="${votes[i] - 1}" aria-valuemin="0" aria-valuemax="${total_votes}">
+                                            <div class="progress-bar ${biggest == i ? "bg-success" : ""}" style="width: ${percent}%">${percent}% (${votes[i] - 1} votes)</div>
+                                            </div>
+                                        </div>`;
+                                }
+
+                            } else {
+                                toast("could not load election result.")
                             }
-
-
                         });
                     })
             } else
@@ -222,7 +240,6 @@ document.body.addEventListener(
             let pval = [];
             let parties = qsa(".political-party");
             let empty = false;
-            let bin_array = [];
 
             // first check that the voting hours if filled
             if (hours.value) {
@@ -257,8 +274,8 @@ document.body.addEventListener(
                                     hide(".kick-off-after");
 
                                     qs(".creation-success").innerHTML = `The Election link is <span class="bold">${res.data}</span>`;
-                                    qs(".creation-success").scrollIntoView();
                                     appear_n_hide(".creation-success", 30000);
+                                    qs(".creation-success").scrollIntoView(false);
                                 });
                             })
                     } else

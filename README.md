@@ -14,3 +14,12 @@ parties. The time-period the election spans is also specified. When the election
 - Anyone (citizen or not) can always monitor the result of an election in real time as the election takes place. This information is also always available after the election period.
 - All these interactions are recorded on the blockchain for transparency and security.
 
+## Notable Elect-"0"-Rate Operations
+- `Create Election`
+<img src="https://github.com/thewoodfish/encode-hack/blob/main/public/img/electo-1.png" style="width: 700px">
+
+- `Vote for candidate`
+<img src="https://github.com/thewoodfish/encode-hack/blob/main/public/img/electo-3.png" style="width: 700px">
+
+-  `Monitor Election`
+<img src="https://github.com/thewoodfish/encode-hack/blob/main/public/img/electo-2.png" style="width: 700px">

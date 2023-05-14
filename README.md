@@ -41,6 +41,7 @@ There a few improvements that MUST be made to Elect-"0"-Rate going forward:
 - Emitting events on the contract.
 - Proper decoding of contract data (phew!)
 - Proper and detailed error handling.
+- BVN verification integration
 - etc.
 
 ### Final

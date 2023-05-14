@@ -27,15 +27,17 @@ parties. The name of the election and time-period the election spans is specifie
 ## How to run or test Elect-"0"-Rate
 - Install `npm` and `nodeJS` on your computer with `v16+`.
 - Clone this(Encode Hack) repo.
+- Set up your local development node. Check <a href="https://github.com/thewoodfish/encode">here</a>.
 - Run `npm install`.
 - After installation of all the necessary packages, run `npm start`.
 - Start interacting with Elect-"0"-Rate!
 
 ### Contract Blockchain Node
+Due to difficulty deploying to the Shibuya contract network, the local contract development node was employed.
 The contract running on a development node can be found here at -> https://github.com/thewoodfish/encode
 
 ## Going forward
-There a few improvements that MUST be made to Elect-"0"-Rate going forward:
+There are few improvements that MUST be made to Elect-"0"-Rate going forward:
 - Very much better UI/UX (😅 That obvious huh?)
 - Emitting events on the contract.
 - Proper decoding of contract data (phew!)
@@ -44,6 +46,6 @@ There a few improvements that MUST be made to Elect-"0"-Rate going forward:
 - etc.
 
 ### Final
-So all in all, in the nearest future, when you find yourself voting for your next leader through Elect-"0"-Rate or it's derivatives, just smile and say to yourself "I AM SAFE, I AM HEARD". Then go home, have a nice dinner and go to bed knowing that no magic can tamper with the election.
+So all in all, in the nearest future, when you find yourself voting for your next leader through Elect-"0"-Rate or it's derivatives, just smile and say to yourself "I AM SAFE, I AM HEARD". Then go home, have a nice dinner and go to bed knowing that no magic can tamper with the election voting process.
 
 Thank you for your time, God bless you! ❤️

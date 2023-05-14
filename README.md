@@ -44,6 +44,6 @@ There a few improvements that MUST be made to Elect-"0"-Rate going forward:
 - etc.
 
 ### Final
-So all in all, in the nearest future, when you find yourself voting for your next leader through Elect-"0"-Rate or it's derivatives, just smile and say to yourself "I AM SAFE, I AM HEARD". After that, go home, have a nice dinner and go to bed knowing no magic can tamper with the election.
+So all in all, in the nearest future, when you find yourself voting for your next leader through Elect-"0"-Rate or it's derivatives, just smile and say to yourself "I AM SAFE, I AM HEARD". Then go home, have a nice dinner and go to bed knowing that no magic can tamper with the election.
 
 Thank you for your time, God bless you! ❤️

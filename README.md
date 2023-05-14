@@ -19,7 +19,7 @@ parties. The time-period the election spans is also specified. When the election
 <img src="https://github.com/thewoodfish/encode-hack/blob/main/public/img/electo-1.png" style="width: 700px">
 
 - `Vote for candidate`
-<img src="https://github.com/thewoodfish/encode-hack/blob/main/public/img/electo-3.png" style="width: 700px">
+<img src="https://github.com/thewoodfish/encode-hack/blob/main/public/img/elect-3.png" style="width: 700px">
 
 -  `Monitor Election`
 <img src="https://github.com/thewoodfish/encode-hack/blob/main/public/img/electo-2.png" style="width: 700px">

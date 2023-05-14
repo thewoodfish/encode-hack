@@ -37,7 +37,7 @@ The contract running on a development node can be found here at -> https://githu
 
 ## Going forward
 There a few improvements that MUST be made to Elect-"0"-Rate going forward:
-- Styling (😅 That obvious huh?)
+- Very much better UI/UX (😅 That obvious huh?)
 - Emitting events on the contract.
 - Proper decoding of contract data (phew!)
 - Proper and detailed error handling.

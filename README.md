@@ -27,7 +27,6 @@ parties. The name of the election and time-period the election spans is specifie
 ## How to run or test Elect-"0"-Rate
 - Install `npm` and `nodeJS` on your computer with `v16+`.
 - Clone this(Encode Hack) repo.
-- Set up the local development chain and get it running. Directions are given here -> https://github.com/thewoodfish/encode#running-a-local-node
 - Run `npm install`.
 - After installation of all the necessary packages, run `npm start`.
 - Start interacting with Elect-"0"-Rate!

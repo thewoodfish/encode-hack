@@ -1,7 +1,7 @@
 export function metadata() {
     return {
         "source": {
-            "hash": "0x7a1e31ae27cdc5b58c11af1d5a3753a24e2bb146ff33d3676b92200fced3334e",
+            "hash": "0xdca86a09adda41823b119a0cdfb4a23696c069ec0e70bff9034c2a2bdfe031ef",
             "language": "ink! 4.2.0",
             "compiler": "rustc 1.69.0",
             "build_info": {
@@ -78,7 +78,7 @@ export function metadata() {
                     "displayName": [
                         "Timestamp"
                     ],
-                    "type": 0
+                    "type": 2
                 }
             },
             "events": [],
@@ -105,7 +105,7 @@ export function metadata() {
                                 "displayName": [
                                     "Vec"
                                 ],
-                                "type": 3
+                                "type": 0
                             }
                         },
                         {
@@ -114,7 +114,7 @@ export function metadata() {
                                 "displayName": [
                                     "Vec"
                                 ],
-                                "type": 3
+                                "type": 0
                             }
                         },
                         {
@@ -123,7 +123,7 @@ export function metadata() {
                                 "displayName": [
                                     "Vec"
                                 ],
-                                "type": 3
+                                "type": 0
                             }
                         },
                         {
@@ -131,6 +131,15 @@ export function metadata() {
                             "type": {
                                 "displayName": [
                                     "u64"
+                                ],
+                                "type": 2
+                            }
+                        },
+                        {
+                            "label": "election_name",
+                            "type": {
+                                "displayName": [
+                                    "Vec"
                                 ],
                                 "type": 0
                             }
@@ -219,7 +228,7 @@ export function metadata() {
                                 "displayName": [
                                     "Vec"
                                 ],
-                                "type": 3
+                                "type": 0
                             }
                         }
                     ],
@@ -276,7 +285,7 @@ export function metadata() {
                                 "displayName": [
                                     "Vec"
                                 ],
-                                "type": 3
+                                "type": 0
                             }
                         },
                         {
@@ -285,7 +294,7 @@ export function metadata() {
                                 "displayName": [
                                     "Vec"
                                 ],
-                                "type": 3
+                                "type": 0
                             }
                         }
                     ],
@@ -325,13 +334,22 @@ export function metadata() {
                                                                 "ty": 0
                                                             }
                                                         },
+                                                        "name": "name"
+                                                    },
+                                                    {
+                                                        "layout": {
+                                                            "leaf": {
+                                                                "key": "0xac5379d9",
+                                                                "ty": 2
+                                                            }
+                                                        },
                                                         "name": "time_frame"
                                                     },
                                                     {
                                                         "layout": {
                                                             "leaf": {
                                                                 "key": "0xac5379d9",
-                                                                "ty": 1
+                                                                "ty": 3
                                                             }
                                                         },
                                                         "name": "candidates"
@@ -366,7 +384,9 @@ export function metadata() {
                 "id": 0,
                 "type": {
                     "def": {
-                        "primitive": "u64"
+                        "sequence": {
+                            "type": 1
+                        }
                     }
                 }
             },
@@ -374,9 +394,7 @@ export function metadata() {
                 "id": 1,
                 "type": {
                     "def": {
-                        "sequence": {
-                            "type": 2
-                        }
+                        "primitive": "u8"
                     }
                 }
             },
@@ -384,36 +402,8 @@ export function metadata() {
                 "id": 2,
                 "type": {
                     "def": {
-                        "composite": {
-                            "fields": [
-                                {
-                                    "name": "hash",
-                                    "type": 3,
-                                    "typeName": "Vec<u8>"
-                                },
-                                {
-                                    "name": "name",
-                                    "type": 3,
-                                    "typeName": "Vec<u8>"
-                                },
-                                {
-                                    "name": "party",
-                                    "type": 3,
-                                    "typeName": "Vec<u8>"
-                                },
-                                {
-                                    "name": "votes",
-                                    "type": 0,
-                                    "typeName": "u64"
-                                }
-                            ]
-                        }
-                    },
-                    "path": [
-                        "sam_os",
-                        "encode",
-                        "Candidate"
-                    ]
+                        "primitive": "u64"
+                    }
                 }
             },
             {
@@ -430,8 +420,36 @@ export function metadata() {
                 "id": 4,
                 "type": {
                     "def": {
-                        "primitive": "u8"
-                    }
+                        "composite": {
+                            "fields": [
+                                {
+                                    "name": "hash",
+                                    "type": 0,
+                                    "typeName": "Vec<u8>"
+                                },
+                                {
+                                    "name": "name",
+                                    "type": 0,
+                                    "typeName": "Vec<u8>"
+                                },
+                                {
+                                    "name": "party",
+                                    "type": 0,
+                                    "typeName": "Vec<u8>"
+                                },
+                                {
+                                    "name": "votes",
+                                    "type": 2,
+                                    "typeName": "u64"
+                                }
+                            ]
+                        }
+                    },
+                    "path": [
+                        "sam_os",
+                        "encode",
+                        "Candidate"
+                    ]
                 }
             },
             {
@@ -439,7 +457,7 @@ export function metadata() {
                 "type": {
                     "def": {
                         "sequence": {
-                            "type": 3
+                            "type": 0
                         }
                     }
                 }
@@ -519,55 +537,13 @@ export function metadata() {
                     "def": {
                         "array": {
                             "len": 32,
-                            "type": 4
+                            "type": 1
                         }
                     }
                 }
             },
             {
                 "id": 10,
-                "type": {
-                    "def": {
-                        "variant": {
-                            "variants": [
-                                {
-                                    "fields": [
-                                        {
-                                            "type": 3
-                                        }
-                                    ],
-                                    "index": 0,
-                                    "name": "Ok"
-                                },
-                                {
-                                    "fields": [
-                                        {
-                                            "type": 8
-                                        }
-                                    ],
-                                    "index": 1,
-                                    "name": "Err"
-                                }
-                            ]
-                        }
-                    },
-                    "params": [
-                        {
-                            "name": "T",
-                            "type": 3
-                        },
-                        {
-                            "name": "E",
-                            "type": 8
-                        }
-                    ],
-                    "path": [
-                        "Result"
-                    ]
-                }
-            },
-            {
-                "id": 11,
                 "type": {
                     "def": {
                         "variant": {
@@ -597,6 +573,48 @@ export function metadata() {
                         {
                             "name": "T",
                             "type": 0
+                        },
+                        {
+                            "name": "E",
+                            "type": 8
+                        }
+                    ],
+                    "path": [
+                        "Result"
+                    ]
+                }
+            },
+            {
+                "id": 11,
+                "type": {
+                    "def": {
+                        "variant": {
+                            "variants": [
+                                {
+                                    "fields": [
+                                        {
+                                            "type": 2
+                                        }
+                                    ],
+                                    "index": 0,
+                                    "name": "Ok"
+                                },
+                                {
+                                    "fields": [
+                                        {
+                                            "type": 8
+                                        }
+                                    ],
+                                    "index": 1,
+                                    "name": "Err"
+                                }
+                            ]
+                        }
+                    },
+                    "params": [
+                        {
+                            "name": "T",
+                            "type": 2
                         },
                         {
                             "name": "E",

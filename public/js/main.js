@@ -91,6 +91,7 @@ document.body.addEventListener(
                                 let data = res.data;
                                 appear(".bvn-ask-div");
                                 appear(".candid8");
+                                qs(".elect-name-1").innerHTML = `Election Name: <code>${res.name}</code>`;
                                 qs(".candidates-row-1").innerHTML = "";
                                 if (data[0].name != '\x00') {
                                     for (var i = 0; i < data.length; i++) {
@@ -108,6 +109,8 @@ document.body.addEventListener(
                             } else {
                                 toast(res.data);
                                 hide(".bvn-ask-div");
+                                qs(".elect-name-1").innerHTML = "";
+                                qs(".candidates-row-1").innerHTML = "";
                             }
                         });
                     })
@@ -206,16 +209,17 @@ document.body.addEventListener(
                                     total_votes += votes[i] - 1;
                                 }
 
-
+                                qs(".elect-name-2").innerHTML = `Election Name: <code>${res.name}</code>`;
                                 qs(".votes-slider").innerHTML = "";
                                 appear(".elect-res");
+                                appear(".stats");
                                 qs(".ttl-votes").innerText = total_votes;
                                 for (var i = 0; i < data.length; i++) {
                                     // calculate the percentage
                                     let percent = (((votes[i] - 1) / total_votes) * 100).toFixed(1);
                                     qs(".votes-slider").innerHTML +=
                                         `<div class="col-3 p-0 bold small cand">
-                                            ${removeBinaryData(data[i].name)} (${data[i].party})
+                                            ${removeBinaryData(data[i].name)} <code>(${data[i].party})</code>
                                         </div>
                                         <div class=" col-9 p-0">
                                         <div class="progress" role="progressbar" 
@@ -226,6 +230,9 @@ document.body.addEventListener(
                                 }
 
                             } else {
+                                qs(".elect-name-2").innerHTML = ``;
+                                qs(".votes-slider").innerHTML = "";
+                                hide(".stats");
                                 toast("could not load election result.")
                             }
                         });
@@ -235,6 +242,7 @@ document.body.addEventListener(
         } else if (e.classList.contains("kick-off-before")) {
             // gather all the form data we have
             let hours = qs(".election-epoch");
+            let title = qs(".election-name");
             let names = qsa(".candidate-name");
             let nval = [];
             let pval = [];
@@ -242,7 +250,7 @@ document.body.addEventListener(
             let empty = false;
 
             // first check that the voting hours if filled
-            if (hours.value) {
+            if (hours.value && title.value) {
                 // make sure they are not empty
                 [].forEach.call(names, (n) => {
                     if (!n.value) empty = true;
@@ -263,6 +271,7 @@ document.body.addEventListener(
                         formData.append(`names`, nval);
                         formData.append(`parties`, pval);
                         formData.append("hours", hours.value);
+                        formData.append("title", title.value);
 
                         fetch("/create-election", {
                             method: 'post',
@@ -282,7 +291,7 @@ document.body.addEventListener(
                         toast("Please fill in details of all candidates");
                 }, 500);
             } else
-                toast("Please fill in the election time span in hours");
+                toast("Please fill in the election name and time span in hours");
 
         }
     },

@@ -72,7 +72,7 @@
 }
 
 .form-label {
-    font-size: 70%;
+    font-size: 90%;
     font-weight: 700;
 }
 
@@ -83,4 +83,16 @@
 .cand {
     position: relative;
     top: -3px;
+}
+
+.fs-90 {
+    font-size: 90%;
+}
+
+.pt-10 {
+    padding-top: 10px;
+}
+
+.pt-0 {
+    padding-top: 0 !important;
 }

@@ -70,7 +70,7 @@ export async function isBvnUnique(contract: any, api: any, alice: any, hash: str
   return result.toHuman();
 }
 
-export async function initElection(api: any, contract: any, account: any, hash: string, names: string, parties: string, bl_hashes: string, hours: any) {
+export async function initElection(api: any, contract: any, account: any, hash: string, names: string, parties: string, bl_hashes: string, hours: any, title: string) {
   // Get the initial gas WeightV2 using api.consts.system.blockWeights['maxBlock']
   const gasLimit = api.registry.createType(
     'WeightV2',
@@ -86,7 +86,7 @@ export async function initElection(api: any, contract: any, account: any, hash: 
       gasLimit: gasLimit,
       storageDepositLimit: null,
       value: new BN('1000000000000000000')
-    }, hash, names, parties, bl_hashes, hours
+    }, hash, names, parties, bl_hashes, hours, title
   )
 
   // Check for errors
@@ -133,7 +133,7 @@ export async function initElection(api: any, contract: any, account: any, hash: 
       gasLimit: estimatedGas,
       storageDepositLimit: null,
       value: new BN('10000000') // 1 TOKEN or it could be value you want to send to the contract in title
-    }, hash, names, parties, bl_hashes, hours)
+    }, hash, names, parties, bl_hashes, hours, title)
     .signAndSend(account, (res: any) => {
       // Send the transaction, like elsewhere this is a normal extrinsic
       // with the same rules as applied in the API (As with the read example,

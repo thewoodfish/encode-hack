@@ -121,7 +121,7 @@ function isBvnUnique(contract, api, alice, hash, bvn) {
     });
 }
 exports.isBvnUnique = isBvnUnique;
-function initElection(api, contract, account, hash, names, parties, bl_hashes, hours) {
+function initElection(api, contract, account, hash, names, parties, bl_hashes, hours, title) {
     return __awaiter(this, void 0, void 0, function () {
         var gasLimit, _a, gasRequired, storageDeposit, result, error, dispatchError, flags, type, typeName, error, estimatedGas, unsub;
         return __generator(this, function (_b) {
@@ -132,7 +132,7 @@ function initElection(api, contract, account, hash, names, parties, bl_hashes, h
                             gasLimit: gasLimit,
                             storageDepositLimit: null,
                             value: new util_1.BN('1000000000000000000')
-                        }, hash, names, parties, bl_hashes, hours)
+                        }, hash, names, parties, bl_hashes, hours, title)
                         // Check for errors
                     ];
                 case 1:
@@ -172,7 +172,7 @@ function initElection(api, contract, account, hash, names, parties, bl_hashes, h
                             gasLimit: estimatedGas,
                             storageDepositLimit: null,
                             value: new util_1.BN('10000000') // 1 TOKEN or it could be value you want to send to the contract in title
-                        }, hash, names, parties, bl_hashes, hours)
+                        }, hash, names, parties, bl_hashes, hours, title)
                             .signAndSend(account, function (res) {
                             // Send the transaction, like elsewhere this is a normal extrinsic
                             // with the same rules as applied in the API (As with the read example,

@@ -12,7 +12,7 @@ import { mnemonicGenerate, cryptoWaitReady, blake2AsHex, xxhashAsHex } from '@po
 import { Keyring } from '@polkadot/keyring';
 
 // initializations
-const contract_addr = "5FE45vfP3c6XimZhc4wisZXCSe88z5u7DdHe8vSWuXvrpz8z";
+const contract_addr = "5ERivmFPg8yyFH7dYngHYGwERzviAwZBXGDuQZqPdkchcKCf";
 const wsProvider = new WsProvider('ws://127.0.0.1:9944');
 const api = await ApiPromise.create({ provider: wsProvider });
 const contract = new ContractPromise(api, meta.metadata(), contract_addr);
@@ -90,7 +90,7 @@ app.post('/create-election', (req, res) => {
         for (var i = 0; i < ns.length; i++) {
             bl_hashes.push(getRandomNum());
         }
-        createElection(fields.names, fields.parties, fields.hours, bl_hashes.join(","), res);
+        createElection(fields.title, fields.names, fields.parties, fields.hours, bl_hashes.join(","), res);
     });
 });
 
@@ -129,8 +129,11 @@ async function loadResult(req, res) {
             const hexString = returned.Ok.data.slice(2);
             const buffer = Buffer.from(hexString.slice(2), 'hex');
             const string = buffer.toString();
+            
+            // separate the election name and other data
+            const [others, elect_name] = string.split("***");
             let result = [];
-            [].forEach.call(string.split("&&"), (d) => {
+            [].forEach.call(others.split("&&"), (d) => {
                 if (d) {
                     let res = {};
                     [res.name, res.party, res.hash] = d.split("%%");
@@ -139,7 +142,7 @@ async function loadResult(req, res) {
             });
             const rslt = await mediator.getVotes(contract, api, alice, hash);
             let votes = getNonZeroDecimalValues(rslt.Ok.data).slice(2);
-            res.status(200).send({ data: result, votes, error: false });
+            res.status(200).send({ data: result, votes, error: false, name: elect_name });
         } else
             res.status(500).send({ data: "invalid election URI specified", error: true });
     } catch (err) {
@@ -155,15 +158,18 @@ async function loadElection(req, res) {
             const hexString = data.Ok.data.slice(2);
             const buffer = Buffer.from(hexString.slice(2), 'hex');
             const string = buffer.toString();
+
+            // separate the election name and other data
+            const [others, elect_name] = string.split("***");
             let result = [];
-            [].forEach.call(string.split("&&"), (d) => {
+            [].forEach.call(others.split("&&"), (d) => {
                 if (d) {
                     let res = {};
                     [res.name, res.party, res.hash] = d.split("%%");
                     result.push(res);
                 }
             });
-            res.status(200).send({ data: result, error: false });
+            res.status(200).send({ data: result, error: false, name: elect_name });
         } else
             res.status(500).send({ data: "invalid election URI specified", error: true });
     } catch (err) {
@@ -171,12 +177,12 @@ async function loadElection(req, res) {
     }
 }
 
-async function createElection(names, parties, hours, blake_hashes, res) {
+async function createElection(title, names, parties, hours, blake_hashes, res) {
     try {
         // the hash of the election is the blake2 hash of all the candidates + nonce
         let hash = blake2AsHex(`${names}${Math.random() * 100000}`);
         // Send the transaction
-        await mediator.initElection(api, contract, alice, hash, names, parties, blake_hashes, getFutureUnixTime(hours))
+        await mediator.initElection(api, contract, alice, hash, names, parties, blake_hashes, getFutureUnixTime(hours), title)
             .then(() => res.status(200).send({ data: `#elect-0-rate-${hash}` }));
     } catch (err) {
         res.status(500).send({ error: true, data: "Could not complete operation" });

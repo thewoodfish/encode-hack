@@ -74,7 +74,8 @@
                                                 placeholder="Name of BVN owner" aria-label="default input example">
                                         </div>
                                     </div>
-                                    <p class="small bold mt-30 candid8 hidden">Candidates</p>
+                                    <p class="bold fs-90 mt-30 elect-name-1"></p>
+                                    <p class="small bold candid8 hidden">Candidates</p>
                                     <div class="row candidates-row-1 g-2"></div>
                                 </div>
                             </div>
@@ -104,10 +105,10 @@
                                     </div>
                                 </form>
                             </div>
-                            <p class="elect-res bold mt-30 hidden"><code>Total Votes</code>: <span class="ttl-votes">0</span>
-                            <hr>
-                            </p>
-                            <div class="row mt-30 votes-slider"></div>
+                            <p class="elect-name-2 mt-30 bold mt-30"></span>
+                            <p class="elect-res bold hidden"><code>Total Votes</code>: <span class="ttl-votes">0</span></p>
+                            <div class="bold hidden stats">Statistics:</div>
+                            <div class="row mt-30 votes-slider p-10 pt-0"></div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"
@@ -119,7 +120,10 @@
                                 manipulate.<br> Welcome to the future!</p>
                             <div>
                                 <form>
-                                    <label for="formFileMultiple" class="form-label">Hours the election stays on</label>
+                                    <label for="formFileMultiple" class="form-label">Name of election</label>
+                                    <input class="form-control election-name" type="tsxt" placeholder="Titan Presidential Election">
+
+                                    <label for="formFileMultiple" class="form-label pt-10">Hours the election stays on</label>
                                     <input class="form-control election-epoch" type="number" value="8">
                                 </form>
                                 <div class="mt-30">

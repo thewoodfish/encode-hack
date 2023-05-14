@@ -1,8 +1,8 @@
 
 <img src="https://github.com/thewoodfish/encode-hack/blob/main/public/img/electo.png">
 
-Elect-"0"-Rate is a blockchain solution that solves the election manipulation problem and ENSURES ABSOLUTELY, a free and fair election.<br>
-You no longer need to fear or worry that you or your candidate were cheated out of any election.<br>
+Elect-"0"-Rate is a blockchain solution that solves the election manipulation problem by ensuring a transparent and secure free-and-fair voting process.<br>
+You no longer need to fear or worry that you or your candidate are being cheated out of any election.<br>
 It is built with <a href="https://use.ink">ink!</a> - a rust eDSL for writing smart contracts.
 
 ## How does Elect-"0"-Rate work?

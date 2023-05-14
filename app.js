@@ -12,7 +12,7 @@ import { mnemonicGenerate, cryptoWaitReady, blake2AsHex, xxhashAsHex } from '@po
 import { Keyring } from '@polkadot/keyring';
 
 // initializations
-const contract_addr = "5EK9xSMnKD1D7ab5r2Y6L53H5Fy2ZFhTyBTsG8hkJnBHizux";
+const contract_addr = "5FE45vfP3c6XimZhc4wisZXCSe88z5u7DdHe8vSWuXvrpz8z";
 const wsProvider = new WsProvider('ws://127.0.0.1:9944');
 const api = await ApiPromise.create({ provider: wsProvider });
 const contract = new ContractPromise(api, meta.metadata(), contract_addr);
@@ -68,6 +68,14 @@ app.post('/load-election', (req, res) => {
     loadElection(req.body, res);
 });
 
+app.post('/vote', (req, res) => {
+    castVote(req.body, res);
+});
+
+app.post('/load-result', (req, res) => {
+    loadResult(req.body, res);
+});
+
 app.post('/create-election', (req, res) => {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
@@ -76,9 +84,74 @@ app.post('/create-election', (req, res) => {
             return;
         }
 
-        createElection(fields.names, fields.parties, fields.hours, res);
+        // create the hashes
+        let bl_hashes = [];
+        let ns = fields.names.split(",");
+        for (var i = 0; i < ns.length; i++) {
+            bl_hashes.push(getRandomNum());
+        }
+        createElection(fields.names, fields.parties, fields.hours, bl_hashes.join(","), res);
     });
 });
+
+async function castVote(req, res) {
+    // check if election is still on 
+    const now = new Date();
+    const unixTimestamp = Math.floor(now.getTime() / 1000); // divide by 1000 to convert to Unix timestamp
+    // get election time
+    const result = await mediator.getBound(contract, api, alice, req.elink);
+    const hex = result.Ok.data.slice(2); // remove the '0x' prefix
+    const decimal = parseInt(hex, 16);
+    const timestamp = decimal / 1e9;
+    if (unixTimestamp < timestamp) {
+        // get bvn and name
+        if (await verifyBVN(req.bvn, req.name)) {
+            // make sure the BVN does not vote twice
+            let result = await mediator.isBvnUnique(contract, api, alice, req.elink, req.bvn);
+            if (result.Ok.data == "0x0000") {
+                // cast vote
+                await mediator.castVote(api, contract, alice, req.elink, req.hash, req.bvn)
+                    .then(() => res.status(200).send({ error: false, data: "Vote cast successfully" }));
+            } else {
+                res.status(500).send({ error: true, data: "You cannot cast your vote twice" });
+            }
+        } else {
+            res.status(500).send({ error: true, data: "BVN verification failed" });
+        }
+    } else {
+        res.status(500).send({ error: true, data: "Election is over" });
+    }
+}
+
+// load an election result
+async function loadResult(req, res) {
+    // we'll load the election info and the votes of the candidates separately
+    // extract election hash
+    let hash = req.link.split("-")[3];
+    if (hash) {
+        const returned = await mediator.getElection(contract, api, alice, hash);
+        const hexString = returned.Ok.data.slice(2); // remove '0x' from beginning
+        const buffer = Buffer.from(hexString.slice(2), 'hex');
+        const string = buffer.toString();
+        let result = [];
+
+        [].forEach.call(string.split("&&"), (d) => {
+            if (d) {
+                // split again
+                let res = {};
+                [res.name, res.party, res.hash] = d.split("%%");
+                result.push(res);
+            }
+        });
+
+        // get the election result
+        const rslt = await mediator.getVotes(contract, api, alice, hash);
+        let votes = getNonZeroDecimalValues(rslt.Ok.data).slice(2);
+
+        res.status(200).send({ data: result, votes, error: false });
+    } else
+        res.status(500).send({ data: "invalid election URI specified", error: true });
+}
 
 async function loadElection(req, res) {
     // extract election hash
@@ -94,9 +167,7 @@ async function loadElection(req, res) {
             if (d) {
                 // split again
                 let res = {};
-                let data = d.split("%%");
-                res.name = data[0];   // name
-                res.party = data[1];
+                [res.name, res.party, res.hash] = d.split("%%");
                 result.push(res);
             }
         });
@@ -106,14 +177,11 @@ async function loadElection(req, res) {
         res.status(500).send({ data: "invalid election URI specified", error: true });
 }
 
-async function createElection(names, parties, hours, res) {
+async function createElection(names, parties, hours, blake_hashes, res) {
     // the hash of the election is the blake2 hash of all the candidates + nonce
     let hash = blake2AsHex(`${names}${Math.random() * 100000}`);
-
-    console.log("fbdjknfd");
-
     // Send the transaction
-    await mediator.initElection(api, contract, alice, hash, names, parties, getFutureUnixTime(hours))
+    await mediator.initElection(api, contract, alice, hash, names, parties, blake_hashes, getFutureUnixTime(hours))
         .then(() => res.status(200).send({ data: `#elect-0-rate-${hash}` }));
 }
 
@@ -122,6 +190,48 @@ function getFutureUnixTime(hours) {
     const futureTime = Date.now() + (hours * millisecondsInHour);
     const futureUnixTime = Math.floor(futureTime / 1000);
     return futureUnixTime;
+}
+
+// function to query foreign API to verify BVN
+async function verifyBVN(number, name) {
+    return true
+}
+
+function getRandomNum() {
+    let min = 100000;
+    let max = 999999;
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function breakStringIntoArray(str) {
+    // Create a new array.
+    var arr = [];
+
+    // Loop through the string and add each character to the array.
+    for (var i = 0; i < str.length; i++) {
+        arr.push(str[i]);
+    }
+
+    // Return the array.
+    return arr;
+}
+
+function getNonZeroDecimalValues(str) {
+    // Break the string into an array.
+    var arr = breakStringIntoArray(str);
+
+    // Create a new array to store the non zero values.
+    var nonZeroValues = [];
+
+    // Loop through the array and add each non zero value to the new array.
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] != 0 && arr[i] != NaN) {
+            nonZeroValues.push(parseInt(arr[i], 16));
+        }
+    }
+
+    // Return the new array.
+    return nonZeroValues;
 }
 
 // listen on port 3000

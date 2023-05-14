@@ -53,6 +53,11 @@ function click(attr) {
     qs(attr).click();
 }
 
+function removeBinaryData(str) {
+    // Remove characters outside the range of printable ASCII characters
+    return str.replace(/[^\x20-\x7E]/g, '');
+}
+
 // candidates count;
 let candidates_count = 1;
 
@@ -84,20 +89,17 @@ document.body.addEventListener(
 
                             if (!res.error) {
                                 let data = res.data;
-                                for (var i = 0; i < data.length; i++) {
-                                    qs(".candidates-row-1").innerHTML += `
-                                    <div class="candid col-md-4 border p-10">
-                                        <p>${data[i].name.substring(1)}</p>
-                                        <p>${data[i].party}</p>
-                                        <div class="d-grid gap-2 mt-30 mb-30">
-                                            <button class="btn btn-primary kick-off-before" type="button">Vote me</button>
-                                            <button class="btn btn-primary kick-off-after hidden" type="button" disabled>
-                                                <span class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                voting...
-                                            </button>
-                                        </div>
-                                    </div>`;
+                                if (data[0].name != '\x00') {
+                                    for (var i = 0; i < data.length; i++) {
+                                        qs(".candidates-row-1").innerHTML += `
+                                        <div class="candid col-md-4 border p-10">
+                                            <p>${removeBinaryData(data[i].name)}</p>
+                                            <p>${data[i].party}</p>
+                                            <div class="d-grid gap-2 mt-30 mb-30">
+                                                <button class="btn btn-primary vote-btn" data-hash="${data[i].hash}" type="button">Vote me</button>
+                                            </div>
+                                        </div>`;
+                                    }
                                 }
                             } else
                                 toast(res.data);
@@ -122,7 +124,7 @@ document.body.addEventListener(
                             <label for="formFileMultiple" class="form-label">Candidates Political
                                 party</label>
                             <input class="form-control election-link political-party" type="text" data-party="1"
-                                placeholder="Rebellion Xtra Party"
+                                placeholder="Misfit Xtra Party"
                                 aria-label="default input example">
                         </div>
                     </form>
@@ -130,6 +132,88 @@ document.body.addEventListener(
             `;
         } else if (e.classList.contains("del-form")) {
             e.parentElement.parentElement.removeChild(e.parentElement);
+        } else if (e.classList.contains("vote-btn")) {
+            let bvn = qs(".bvn");
+            let name = qs(".bvn-owner");
+
+            if (bvn.value && name.value) {
+                // disable all button
+                [].forEach.call(qsa(".vote-btn"), (b) => {
+                    b.disabled = true;
+                });
+
+                fetch("/vote", {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "bvn": bvn.value,
+                        "name": name.value,
+                        "elink": qs(".election-link").value.split("-")[3],
+                        "hash": e.dataset.hash
+                    })
+                })
+                    .then(async res => {
+                        await res.json().then(res => {
+                            toast(res.data);
+                        });
+                    })
+            } else {
+                toast("Please input your BVN and name");
+            }
+        } else if (e.classList.contains("load-election-before-1")) {
+            let elink = qs(".election-link-1");
+            if (elink.value) {
+                hide(".load-election-before-1");
+                appear(".load-election-after-1");
+
+                // send request to chain
+                fetch("/load-result", {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "link": elink.value
+                    })
+                })
+                    .then(async res => {
+                        await res.json().then(res => {
+                            hide(".load-election-after-1");
+                            appear(".load-election-before-1");
+
+                            // first get the data
+                            let data = res.data;
+                            let votes = res.votes;
+                            let total_votes = 0;
+
+                            // get sum total of votes
+                            for (var i = 0; i < votes.length; i++) {
+                                total_votes += votes[i] - 1;
+                            }
+
+                            qs(".votes-slider").innerHTML = "";
+                            for (var i = 0; i < data.length; i++) {
+                                // calculate the percentage
+                                let percent = (((votes[i] - 1) / total_votes) * 100).toFixed(1);
+                                qs(".votes-slider").innerHTML +=
+                                    `<div class="col-md-3 p-0">
+                                        ${removeBinaryData(data[i].name)} (${data[i].party})
+                                    </div>
+                                    <div class=" col-md-9 p-0">
+                                    <div class="progress" role="progressbar" 
+                                        aria-valuenow="${votes[i] - 1}" aria-valuemin="0" aria-valuemax="${total_votes}">
+                                        <div class="progress-bar" style="width: ${percent}%">${percent}% (${votes[i] - 1} votes)</div>
+                                        </div>
+                                    </div>`;
+                            }
+
+
+                        });
+                    })
+            } else
+                toast("Please fill in a link")
         } else if (e.classList.contains("kick-off-before")) {
             // gather all the form data we have
             let hours = qs(".election-epoch");

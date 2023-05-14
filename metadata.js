@@ -1,7 +1,7 @@
 export function metadata() {
     return {
         "source": {
-            "hash": "0xcfdee35151135f6b0ac57366857202a2b4533ddef2dc2c0757f68b7b07383ed4",
+            "hash": "0x7a1e31ae27cdc5b58c11af1d5a3753a24e2bb146ff33d3676b92200fced3334e",
             "language": "ink! 4.2.0",
             "compiler": "rustc 1.69.0",
             "build_info": {
@@ -47,31 +47,31 @@ export function metadata() {
                     "displayName": [
                         "AccountId"
                     ],
-                    "type": 11
+                    "type": 14
                 },
                 "balance": {
                     "displayName": [
                         "Balance"
                     ],
-                    "type": 12
+                    "type": 15
                 },
                 "blockNumber": {
                     "displayName": [
                         "BlockNumber"
                     ],
-                    "type": 14
+                    "type": 17
                 },
                 "chainExtension": {
                     "displayName": [
                         "ChainExtension"
                     ],
-                    "type": 15
+                    "type": 18
                 },
                 "hash": {
                     "displayName": [
                         "Hash"
                     ],
-                    "type": 13
+                    "type": 16
                 },
                 "maxEventTopics": 4,
                 "timestamp": {
@@ -96,7 +96,7 @@ export function metadata() {
                             "label": "hash",
                             "type": {
                                 "displayName": [],
-                                "type": 3
+                                "type": 9
                             }
                         },
                         {
@@ -105,7 +105,7 @@ export function metadata() {
                                 "displayName": [
                                     "Vec"
                                 ],
-                                "type": 5
+                                "type": 3
                             }
                         },
                         {
@@ -114,7 +114,7 @@ export function metadata() {
                                 "displayName": [
                                     "Vec"
                                 ],
-                                "type": 5
+                                "type": 3
                             }
                         },
                         {
@@ -123,7 +123,7 @@ export function metadata() {
                                 "displayName": [
                                     "Vec"
                                 ],
-                                "type": 5
+                                "type": 3
                             }
                         },
                         {
@@ -158,7 +158,7 @@ export function metadata() {
                             "label": "hash",
                             "type": {
                                 "displayName": [],
-                                "type": 3
+                                "type": 9
                             }
                         }
                     ],
@@ -174,7 +174,7 @@ export function metadata() {
                             "ink",
                             "MessageResult"
                         ],
-                        "type": 9
+                        "type": 10
                     },
                     "selector": "0xaf493719"
                 },
@@ -184,7 +184,7 @@ export function metadata() {
                             "label": "hash",
                             "type": {
                                 "displayName": [],
-                                "type": 3
+                                "type": 9
                             }
                         }
                     ],
@@ -200,9 +200,110 @@ export function metadata() {
                             "ink",
                             "MessageResult"
                         ],
-                        "type": 10
+                        "type": 11
                     },
                     "selector": "0x9c677d96"
+                },
+                {
+                    "args": [
+                        {
+                            "label": "hash",
+                            "type": {
+                                "displayName": [],
+                                "type": 9
+                            }
+                        },
+                        {
+                            "label": "bvn",
+                            "type": {
+                                "displayName": [
+                                    "Vec"
+                                ],
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "default": false,
+                    "docs": [],
+                    "label": "bvn_isunique",
+                    "mutates": false,
+                    "payable": true,
+                    "returnType": {
+                        "displayName": [
+                            "ink",
+                            "MessageResult"
+                        ],
+                        "type": 12
+                    },
+                    "selector": "0xa232648b"
+                },
+                {
+                    "args": [
+                        {
+                            "label": "hash",
+                            "type": {
+                                "displayName": [],
+                                "type": 9
+                            }
+                        }
+                    ],
+                    "default": false,
+                    "docs": [],
+                    "label": "get_votes",
+                    "mutates": false,
+                    "payable": true,
+                    "returnType": {
+                        "displayName": [
+                            "ink",
+                            "MessageResult"
+                        ],
+                        "type": 10
+                    },
+                    "selector": "0x5f9d374c"
+                },
+                {
+                    "args": [
+                        {
+                            "label": "hash",
+                            "type": {
+                                "displayName": [],
+                                "type": 9
+                            }
+                        },
+                        {
+                            "label": "uniq_str",
+                            "type": {
+                                "displayName": [
+                                    "Vec"
+                                ],
+                                "type": 3
+                            }
+                        },
+                        {
+                            "label": "bvn",
+                            "type": {
+                                "displayName": [
+                                    "Vec"
+                                ],
+                                "type": 3
+                            }
+                        }
+                    ],
+                    "default": false,
+                    "docs": [
+                        " This is the message that casts the vote on a voters behalf"
+                    ],
+                    "label": "cast_vote",
+                    "mutates": true,
+                    "payable": true,
+                    "returnType": {
+                        "displayName": [
+                            "ink",
+                            "MessageResult"
+                        ],
+                        "type": 6
+                    },
+                    "selector": "0xcaed155c"
                 }
             ]
         },
@@ -234,6 +335,15 @@ export function metadata() {
                                                             }
                                                         },
                                                         "name": "candidates"
+                                                    },
+                                                    {
+                                                        "layout": {
+                                                            "leaf": {
+                                                                "key": "0xac5379d9",
+                                                                "ty": 5
+                                                            }
+                                                        },
+                                                        "name": "bvns"
                                                     }
                                                 ],
                                                 "name": "Entry"
@@ -279,16 +389,16 @@ export function metadata() {
                                 {
                                     "name": "hash",
                                     "type": 3,
-                                    "typeName": "[u8; 32]"
+                                    "typeName": "Vec<u8>"
                                 },
                                 {
                                     "name": "name",
-                                    "type": 5,
+                                    "type": 3,
                                     "typeName": "Vec<u8>"
                                 },
                                 {
                                     "name": "party",
-                                    "type": 5,
+                                    "type": 3,
                                     "typeName": "Vec<u8>"
                                 },
                                 {
@@ -310,8 +420,7 @@ export function metadata() {
                 "id": 3,
                 "type": {
                     "def": {
-                        "array": {
-                            "len": 32,
+                        "sequence": {
                             "type": 4
                         }
                     }
@@ -330,7 +439,7 @@ export function metadata() {
                 "type": {
                     "def": {
                         "sequence": {
-                            "type": 4
+                            "type": 3
                         }
                     }
                 }
@@ -408,12 +517,23 @@ export function metadata() {
                 "id": 9,
                 "type": {
                     "def": {
+                        "array": {
+                            "len": 32,
+                            "type": 4
+                        }
+                    }
+                }
+            },
+            {
+                "id": 10,
+                "type": {
+                    "def": {
                         "variant": {
                             "variants": [
                                 {
                                     "fields": [
                                         {
-                                            "type": 5
+                                            "type": 3
                                         }
                                     ],
                                     "index": 0,
@@ -434,7 +554,7 @@ export function metadata() {
                     "params": [
                         {
                             "name": "T",
-                            "type": 5
+                            "type": 3
                         },
                         {
                             "name": "E",
@@ -447,7 +567,7 @@ export function metadata() {
                 }
             },
             {
-                "id": 10,
+                "id": 11,
                 "type": {
                     "def": {
                         "variant": {
@@ -489,13 +609,63 @@ export function metadata() {
                 }
             },
             {
-                "id": 11,
+                "id": 12,
+                "type": {
+                    "def": {
+                        "variant": {
+                            "variants": [
+                                {
+                                    "fields": [
+                                        {
+                                            "type": 13
+                                        }
+                                    ],
+                                    "index": 0,
+                                    "name": "Ok"
+                                },
+                                {
+                                    "fields": [
+                                        {
+                                            "type": 8
+                                        }
+                                    ],
+                                    "index": 1,
+                                    "name": "Err"
+                                }
+                            ]
+                        }
+                    },
+                    "params": [
+                        {
+                            "name": "T",
+                            "type": 13
+                        },
+                        {
+                            "name": "E",
+                            "type": 8
+                        }
+                    ],
+                    "path": [
+                        "Result"
+                    ]
+                }
+            },
+            {
+                "id": 13,
+                "type": {
+                    "def": {
+                        "primitive": "bool"
+                    }
+                }
+            },
+            {
+                "id": 14,
                 "type": {
                     "def": {
                         "composite": {
                             "fields": [
                                 {
-                                    "type": 3,
+                                    "type": 9,
                                     "typeName": "[u8; 32]"
                                 }
                             ]
@@ -509,7 +679,7 @@ export function metadata() {
                 }
             },
             {
-                "id": 12,
+                "id": 15,
                 "type": {
                     "def": {
                         "primitive": "u128"
@@ -517,13 +687,13 @@ export function metadata() {
                 }
             },
             {
-                "id": 13,
+                "id": 16,
                 "type": {
                     "def": {
                         "composite": {
                             "fields": [
                                 {
-                                    "type": 3,
+                                    "type": 9,
                                     "typeName": "[u8; 32]"
                                 }
                             ]
@@ -537,7 +707,7 @@ export function metadata() {
                 }
             },
             {
-                "id": 14,
+                "id": 17,
                 "type": {
                     "def": {
                         "primitive": "u32"
@@ -545,7 +715,7 @@ export function metadata() {
                 }
             },
             {
-                "id": 15,
+                "id": 18,
                 "type": {
                     "def": {
                         "variant": {}

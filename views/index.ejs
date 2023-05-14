@@ -64,7 +64,8 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <input class="form-control bvn" type="text"
-                                                placeholder="Bank Verification Number" aria-label="default input example">
+                                                placeholder="Bank Verification Number"
+                                                aria-label="default input example">
                                         </div>
                                         <div class="col-md-6">
                                             <input class="form-control bvn-owner" type="text"
@@ -77,7 +78,31 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
-                        tabindex="0">...</div>
+                        tabindex="0">
+                        <div class="mt-30">
+                            <div>
+                            <p>You can check the election results here, whether it's ongoing or it has ended.</p>
+                                <form class="row">
+                                    <div class="col-auto width-50">
+                                        <input class="form-control election-link-1" type="text"
+                                            placeholder="Elect '0' Rate link" aria-label="default input example">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-primary load-election-before-1" type="submit"
+                                            onclick="return false">Load election
+                                            result</button>
+                                        <button class="btn btn-primary load-election-after-1 hidden" type="button"
+                                            disabled>
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+                                            loading...
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row mt-30 votes-slider"></div>
+                        </div>
+                    </div>
                     <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"
                         tabindex="0">
                         <div class="mt-30">
@@ -112,7 +137,7 @@
                                                         Political
                                                         party</label>
                                                     <input class="form-control election-link political-party"
-                                                        type="text" data-party="1" placeholder="Rebellion Xtra Party"
+                                                        type="text" data-party="1" placeholder="Misfit Xtra Party"
                                                         aria-label="default input example">
                                                 </div>
                                             </form>

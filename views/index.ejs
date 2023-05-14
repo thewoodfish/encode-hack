@@ -40,23 +40,41 @@
                         <div class="mt-30">
                             <p>You can vote your favourite candidate here. All you have to do is enter the "election
                                 link".</p>
-                            <form class="row">
-                                <div class="col-auto width-50">
-                                    <input class="form-control election-link" type="text"
-                                        placeholder="Elect '0' Rate link" aria-label="default input example">
+                            <div class="col-md-12">
+                                <div>
+                                    <form class="row">
+                                        <div class="col-auto width-50">
+                                            <input class="form-control election-link" type="text"
+                                                placeholder="Elect '0' Rate link" aria-label="default input example">
+                                        </div>
+                                        <div class="col-auto">
+                                            <button class="btn btn-primary load-election-before" type="submit"
+                                                onclick="return false">Load election
+                                                details</button>
+                                            <button class="btn btn-primary load-election-after hidden" type="button"
+                                                disabled>
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                                loading...
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="col-auto">
-                                    <button class="btn btn-primary load-election-before" type="submit" onclick="return false">Load election
-                                        details</button>
-                                    <button class="btn btn-primary load-election-after hidden" type="button" disabled>
-                                        <span class="spinner-border spinner-border-sm" role="status"
-                                            aria-hidden="true"></span>
-                                        loading...
-                                    </button>
+                                <div class="mt-30">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input class="form-control bvn" type="text"
+                                                placeholder="Bank Verification Number" aria-label="default input example">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input class="form-control bvn-owner" type="text"
+                                                placeholder="Name of BVN owner" aria-label="default input example">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-30 candidates-row-1"></div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
-
                     </div>
                     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
                         tabindex="0">...</div>
@@ -64,7 +82,7 @@
                         tabindex="0">
                         <div class="mt-30">
                             <div class="alert alert-success creation-success hidden" role="alert">
-                              </div>
+                            </div>
                             <p>Create a free and fair election poll. This election is virtually impossible to
                                 manipulate. Welcome to the future!</p>
                             <div>
@@ -74,30 +92,28 @@
                                 </form>
                                 <div class="mt-30">
                                     <p class="bold">Candidates Section</p>
-                                    
+
                                     <div class="right">
-                                        <button type="button" class="btn btn-primary add-candidate">+ add new candidate</button>
+                                        <button type="button" class="btn btn-primary add-candidate">+ add new
+                                            candidate</button>
                                     </div>
                                     <div class="candidates-coll">
                                         <div class="mt-30 border p-10 rad-10">
                                             <p class="del-form pointer right">Delete Form</p>
                                             <form>
                                                 <div class="mb-3">
-                                                    <label for="formFileMultiple" class="form-label">Candidates Name</label>
-                                                    <input class="form-control election-link candidate-name"  type="text"
-                                                        placeholder="Woodfish"
-                                                        aria-label="default input example">
+                                                    <label for="formFileMultiple" class="form-label">Candidates
+                                                        Name</label>
+                                                    <input class="form-control election-link candidate-name" type="text"
+                                                        placeholder="Woodfish" aria-label="default input example">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="formFileMultiple" class="form-label">Candidates Political
+                                                    <label for="formFileMultiple" class="form-label">Candidates
+                                                        Political
                                                         party</label>
-                                                    <input class="form-control election-link political-party" type="text" data-party="1"
-                                                        placeholder="Rebellion Xtra Party"
+                                                    <input class="form-control election-link political-party"
+                                                        type="text" data-party="1" placeholder="Rebellion Xtra Party"
                                                         aria-label="default input example">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="formFileMultiple" class="form-label">Image</label>
-                                                    <input class="form-control candidate-image" type="file">
                                                 </div>
                                             </form>
                                         </div>
@@ -105,7 +121,8 @@
                                 </div>
 
                                 <div class="d-grid gap-2 mt-30 mb-30">
-                                    <button class="btn btn-primary kick-off-before" type="button">Kick off election</button>
+                                    <button class="btn btn-primary kick-off-before" type="button">Kick off
+                                        election</button>
                                     <button class="btn btn-primary kick-off-after hidden" type="button" disabled>
                                         <span class="spinner-border spinner-border-sm" role="status"
                                             aria-hidden="true"></span>

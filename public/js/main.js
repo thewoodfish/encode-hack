@@ -82,7 +82,25 @@ document.body.addEventListener(
                             hide(".load-election-after");
                             appear(".load-election-before");
 
-                            console.log(res);
+                            if (!res.error) {
+                                let data = res.data;
+                                for (var i = 0; i < data.length; i++) {
+                                    qs(".candidates-row-1").innerHTML += `
+                                    <div class="candid col-md-4 border p-10">
+                                        <p>${data[i].name.substring(1)}</p>
+                                        <p>${data[i].party}</p>
+                                        <div class="d-grid gap-2 mt-30 mb-30">
+                                            <button class="btn btn-primary kick-off-before" type="button">Vote me</button>
+                                            <button class="btn btn-primary kick-off-after hidden" type="button" disabled>
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                                voting...
+                                            </button>
+                                        </div>
+                                    </div>`;
+                                }
+                            } else
+                                toast(res.data);
                         });
                     })
             } else
@@ -107,10 +125,6 @@ document.body.addEventListener(
                                 placeholder="Rebellion Xtra Party"
                                 aria-label="default input example">
                         </div>
-                        <div class="mb-3">
-                            <label for="formFileMultiple" class="form-label">Image</label>
-                            <input class="form-control candidate-image" type="file">
-                        </div>
                     </form>
                 </div>
             `;
@@ -123,7 +137,6 @@ document.body.addEventListener(
             let nval = [];
             let pval = [];
             let parties = qsa(".political-party");
-            let images = qsa(".candidate-image");
             let empty = false;
             let bin_array = [];
 
@@ -140,31 +153,12 @@ document.body.addEventListener(
                     pval.push(p.value);
                 });
 
-                [].forEach.call(images, (i) => {
-                    if (!i.value) empty = true;
-                    let file = i.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function (e) {
-                            const bin = new Blob([new Uint8Array(e.target.result)], { type: file.type });
-                            bin_array.push(bin);
-                        };
-                        reader.readAsArrayBuffer(file);
-                    }
-                });
-
                 setTimeout(() => {
                     if (!empty) {
                         hide(".kick-off-before");
                         appear(".kick-off-after");
 
                         const formData = new FormData();
-                        for (var i = 0; i < bin_array.length; i++) {
-                            let b = bin_array[i];
-                            formData.append(`bin_${i}`, b);
-                        }
-
-                        // send the data to the server
                         formData.append(`names`, nval);
                         formData.append(`parties`, pval);
                         formData.append("hours", hours.value);

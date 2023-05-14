@@ -23,3 +23,27 @@ parties. The time-period the election spans is also specified. When the election
 
 -  `Monitor Election`
 <img src="https://github.com/thewoodfish/encode-hack/blob/main/public/img/electo-2.png" style="width: 700px">
+
+## How to run or test Elect-"0"-Rate
+- Install `npm` and `nodeJS` on your computer with `v16+`.
+- Clone this(Encode Hack) repo.
+- Set up the local development chain and get it running. Directions are given here -> https://github.com/thewoodfish/encode#running-a-local-node
+- Run `npm install`.
+- After installation of all the necessary packages, run `npm start`.
+- Start interacting with Elect-"0"-Rate!
+
+### Contract Blockchain Node
+The contract running on a development node can be found here at -> https://github.com/thewoodfish/encode
+
+## Going forward
+There a few improvements that MUST be made to Elect-"0"-Rate going forward:
+- Styling (😅 That obvious huh?)
+- Emitting events on the contract.
+- Proper decoding of contract data (phew!)
+- Proper and detailed error handling.
+- etc.
+
+### Final
+So all in all, in the nearest future, when you find yourself voting for your next leader through Elect-"0"-Rate or it's derivatives, just smile and say to yourself "I AM SAFE, I WILL BE HEARD". After then, go home, have a nice dinner and go to bed.
+
+Thank you for your time, God bless you! ❤️
